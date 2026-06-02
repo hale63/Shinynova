@@ -287,7 +287,7 @@
 <body class="overflow-x-hidden font-mont antialiased text-gray-900">
 
 
-  <!--top navbar-->>
+  <!--top navbar-->
  <div class="bg-[#2a7a2a] text-white text-sm px-4 py-2">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left">
 
@@ -314,7 +314,7 @@
 
     </div>
   </div>
-<!--navbar-->>
+<!--navbar-->
   <nav class="bg-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
@@ -336,7 +336,7 @@
           </a>
         </li>
         <li>
-          <a href="#" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
+          <a href="about.html" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
             About
           </a>
         </li>
@@ -399,7 +399,7 @@
     <div id="mobile-menu">
       <ul class="flex flex-col px-6 pb-5 pt-3 gap-5 text-gray-800 font-semibold text-base tracking-wide border-t border-gray-100">
         <li><a href="#" class="block hover:text-[#2a7a2a] transition-colors">Home</a></li>
-        <li><a href="#" class="block hover:text-[#2a7a2a] transition-colors">About</a></li>
+        <li><a href="about.html" class="block hover:text-[#2a7a2a] transition-colors">About</a></li>
         <li><a href="#" class="block hover:text-[#2a7a2a] transition-colors">Services</a></li>
         <li><a href="#" class="block hover:text-[#2a7a2a] transition-colors">Contact</a></li>
 
@@ -501,7 +501,7 @@
         </div>
       </div>
  
-      <div class="relative flex items-end justify-center w-full h-full">
+      <div class="relative flex items-end justify-center w-full h-full translate-y-16 sm:translate-y-0">
         <img
           src="assets/hero.png"
           alt="Professional Cleaning Team"
@@ -509,7 +509,7 @@
         />
       </div>
 
-      <div class="animate-fade-slide-cta absolute top-12 left-2 sm:-left-4 bg-white rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-xl flex items-center gap-2 sm:gap-3 z-30 scale-90 sm:scale-100">
+      <div class="animate-fade-slide-stats absolute -top-9 left-3 lg:top-24 lg:left-6 bg-white rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-xl flex items-center gap-2 sm:gap-3 z-30 scale-90 sm:scale-100">
         <div class="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-400 text-base sm:text-lg">★</div>
         <div>
           <div class="text-[9px] sm:text-[10px] text-gray-400 leading-none">Our Rating</div>
@@ -517,7 +517,7 @@
         </div>
       </div>
  
-      <div class="animate-fade-slide-stats absolute bottom-20 xs:bottom-28 left-2 sm:-left-8 bg-white rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-xl flex items-center gap-2 sm:gap-3 z-30 scale-90 sm:scale-100">
+      <div class="animate-fade-slide-stats absolute -top-9 right-3 left-auto lg:top-24 lg:right-6 bg-white rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-xl flex items-center gap-2 sm:gap-3 z-30 scale-90 sm:scale-100">
         <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-green-50 flex items-center justify-center">
           <svg width="16" height="16" class="sm:w-[18px] sm:h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#2a7a10" stroke-width="2.5" stroke-linecap="round">
             <path d="M5 13l4 4L19 7"/>
@@ -685,7 +685,7 @@
       </h2>
     </div>
 
-    <div class="no-scrollbar flex gap-6 overflow-x-auto snap-x snap-mandatory pb-12 pt-2 px-2 -mx-2 scroll-smooth animate-fade-in-up delay-200">
+    <div id="services-carousel" class="no-scrollbar flex gap-6 overflow-x-auto snap-x snap-mandatory pb-12 pt-2 px-2 -mx-2 scroll-smooth animate-fade-in-up delay-200">
       
       <div class="w-[85vw] sm:w-[45vw] lg:w-[31vw] xl:w-[24rem] flex-shrink-0 snap-start bg-white rounded-[2.5rem] p-5 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between group">
         <div>
@@ -758,15 +758,6 @@
       </div>
 
     </div>
-
-    <div class="flex items-center justify-center gap-3 animate-fade-in-up delay-300">
-      <span class="w-2 h-2 rounded-full bg-gray-300"></span>
-      <span class="w-8 h-2 rounded-full bg-[#3cd175] transition-all duration-300"></span>
-      <span class="w-2 h-2 rounded-full bg-gray-300"></span>
-      <span class="w-2 h-2 rounded-full bg-gray-300"></span>
-    </div>
-    <div id="services-carousel" class="no-scrollbar flex gap-6 overflow-x-auto snap-x snap-mandatory pb-12 pt-2 px-2 -mx-2 scroll-smooth animate-fade-in-up delay-200">
-       </div>
 
     <div class="flex flex-col items-center justify-center gap-4 animate-fade-in-up delay-300">
       <div id="carousel-dots" class="flex items-center justify-center gap-3">
@@ -1129,8 +1120,8 @@
           <div>
             <h3 class="text-[#3cd175] font-bold text-lg mb-6 tracking-wide">Company</h3>
             <ul class="flex flex-col gap-3.5 text-sm font-medium">
-              <li><a href="#" class="footer-link">About</a></li>
-              <li><a href="#" class="footer-link">Our Mission</a></li>
+              <li><a href="about.html" class="footer-link">About</a></li>
+              <li><a href="about.html#values" class="footer-link">Our Mission</a></li>
               <li><a href="#" class="footer-link">Our Blogs</a></li>
               <li><a href="#" class="footer-link">Help Center</a></li>
               <li><a href="#" class="footer-link">Contact Us</a></li>

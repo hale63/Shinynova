@@ -6,6 +6,7 @@
  function toggleMenu() {
       const menu = document.getElementById('mobile-menu');
       const btn = document.getElementById('hamburger');
+      if (!menu || !btn) return;
       menu.classList.toggle('open');
       btn.classList.toggle('open');
     }
@@ -13,6 +14,7 @@
 
 //// HERO part
   const canvas = document.getElementById('bubble-canvas');
+if (canvas) {
   const ctx    = canvas.getContext('2d');
   function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
   window.addEventListener('resize', () => { resize(); init(); });
@@ -72,6 +74,7 @@
     requestAnimationFrame(draw);
   }
   draw();
+}
 
 
 //// COMPONENT FUNCTIONALITY SCRIPT     after and before        -->
@@ -83,6 +86,8 @@
     const afterWrapper = document.getElementById('after-wrapper');
     const afterImg = document.getElementById('after-img');
     const sliderLine = document.getElementById('slider-line');
+
+    if (!container || !control || !afterWrapper || !afterImg || !sliderLine) return;
 
     function updateSliderPosition() {
       const value = control.value;
@@ -140,6 +145,7 @@
   function switchTestimonial(index) {
     activeIndex = index;
     const wrapper = document.getElementById('testimonial-content-wrapper');
+    if (!wrapper) return;
     
     // Begin fade-out animation sequence
     wrapper.classList.add('fade-hidden');
@@ -192,13 +198,17 @@
   const cards = Array.from(carousel.children);
   let activeIndex = 0;
   let autoplayTimer = null;
+  const autoplayDelay = 3000;
+
+  if (!cards.length) return;
 
   // 1. DYNAMICALLY GENERATE DOT INDICATORS
   function setupDots() {
     dotsContainer.innerHTML = "";
     cards.forEach((_, index) => {
       const dot = document.createElement("button");
-      dot.className = "h-2 rounded-full transition-all duration-300 aria-label='Go to slide'";
+      dot.className = "h-2 rounded-full transition-all duration-300";
+      dot.setAttribute("aria-label", `Go to service slide ${index + 1}`);
       dot.style.backgroundColor = index === activeIndex ? "#3cd175" : "#d1d5db";
       dot.style.width = index === activeIndex ? "2rem" : "0.5rem";
       
@@ -275,21 +285,18 @@
 
   // 6. AUTOPLAY CONTROLS
   function startAutoplay() {
+    stopAutoplay();
     autoplayTimer = setInterval(() => {
-      let nextIndex = activeIndex + 1;
-      if (nextIndex >= cards.length) nextIndex = 0;
+      const nextIndex = (activeIndex + 1) % cards.length;
       scrollToIndex(nextIndex);
-    }, 4000); // Transitions to a new item every 4 seconds
+    }, autoplayDelay);
   }
 
   function stopAutoplay() {
-    if (autoplayTimer) clearInterval(autoplayTimer);
+    if (!autoplayTimer) return;
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
   }
-
-  // Pause autoplay when user hovers over carousel elements
-  carousel.addEventListener("mouseenter", stopAutoplay);
-  carousel.addEventListener("mouseleave", startAutoplay);
-  carousel.addEventListener("touchstart", stopAutoplay, { passive: true });
 
   // Initialize Slider Configurations
   setupDots();
