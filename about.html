@@ -81,18 +81,228 @@
     .footer-link:hover::after {
       width: 100%;
     }
+
+    /* ─── Hero breadcrumb section ─── */
+    .page-hero {
+      background: linear-gradient(135deg, #ffffff 0%, #b8e986 28%, #4caf1a 58%, #2a7a10 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 50px;
+      background: white;
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    /* ─── Floating blobs ─── */
+    @keyframes blobFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(20px,-15px) scale(1.05); }
+      66% { transform: translate(-15px,10px) scale(0.97); }
+    }
+    .blob { animation: blobFloat 8s ease-in-out infinite; }
+    .blob2 { animation: blobFloat 11s ease-in-out 2s infinite; }
+
+    /* ─── Service card ─── */
+    .svc-card {
+      position: relative;
+      background: #fff;
+      border-radius: 28px;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease;
+      cursor: default;
+    }
+    .svc-card:hover {
+      transform: translateY(-10px) scale(1.015);
+      box-shadow: 0 32px 60px rgba(42,122,16,0.18);
+    }
+    .svc-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 0;
+    }
+    .svc-card:hover::before { opacity: 1; }
+    .svc-card .card-content { position: relative; z-index: 1; transition: color 0.3s; }
+    .svc-card:hover .card-title,
+    .svc-card:hover .card-desc,
+    .svc-card:hover .card-feature { color: #fff !important; }
+    .svc-card:hover .card-icon-wrap {
+      background: rgba(255,255,255,0.2) !important;
+    }
+    .svc-card:hover .card-icon-wrap svg { color: #fff !important; }
+    .svc-card:hover .card-badge {
+      background: rgba(255,255,255,0.2) !important;
+      color: #fff !important;
+    }
+    .svc-card:hover .card-cta {
+      background: white !important;
+      color: var(--green-dark) !important;
+    }
+    .svc-card:hover .card-number { color: rgba(255,255,255,0.1) !important; }
+    .svc-card:hover .feature-dot { background: rgba(255,255,255,0.5) !important; }
+    .svc-card:hover .price-tag { color: #fff !important; }
+    .svc-card:hover .divider { border-color: rgba(255,255,255,0.2) !important; }
+
+    /* ─── Process steps ─── */
+    @keyframes stepPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(42,122,16,0.4); }
+      50% { box-shadow: 0 0 0 14px rgba(42,122,16,0); }
+    }
+    .step-num { animation: stepPulse 2.5s ease-in-out infinite; }
+
+    /* ─── Scroll reveal ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-delay-6 { transition-delay: 0.6s; }
+
+    /* ─── Stats ticker ─── */
+    @keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .stat-val { animation: countUp 0.6s ease forwards; }
+
+    /* ─── CTA banner sparkle ─── */
+    @keyframes sparkle {
+      0%,100% { opacity: 0; transform: scale(0) rotate(0deg); }
+      40%,60% { opacity: 1; transform: scale(1) rotate(180deg); }
+    }
+    .sparkle { animation: sparkle 3s ease-in-out infinite; }
+    .sparkle2 { animation: sparkle 4s ease-in-out 1.2s infinite; }
+    .sparkle3 { animation: sparkle 3.5s ease-in-out 0.6s infinite; }
+
+    /* ─── Shimmer on CTA button ─── */
+    @keyframes shimmer { 0% { transform: translateX(-110%) skewX(-20deg); } 100% { transform: translateX(110%) skewX(-20deg); } }
+    .shimmer-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+      transform: translateX(-110%) skewX(-20deg);
+    }
+    .shimmer-btn:hover::after { animation: shimmer 0.7s ease forwards; }
+
+    /* ─── FAQ accordion ─── */
+    .faq-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+    .faq-body.open { max-height: 300px; }
+    .faq-icon { transition: transform 0.3s ease; }
+    .faq-icon.open { transform: rotate(45deg); }
+
+    /* Footer link hover */
+    .footer-link { position: relative; transition: color 0.3s ease; }
+    .footer-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: #3cd175; transition: width 0.3s ease; }
+    .footer-link:hover { color: #fff; }
+    .footer-link:hover::after { width: 100%; }
+
+
+    /* ── Floating bubble keyframes ── */
+    @keyframes floatUp {
+      0%   { transform: translateY(0)   scale(1);   opacity: 0.55; }
+      50%  { transform: translateY(-40px) scale(1.08); opacity: 0.75; }
+      100% { transform: translateY(0)   scale(1);   opacity: 0.55; }
+    }
+    @keyframes drift {
+      0%   { transform: translateX(0); }
+      50%  { transform: translateX(12px); }
+      100% { transform: translateX(0); }
+    }
+ 
+    /* ── Individual bubble classes ── */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+        rgba(255,255,255,0.55) 0%,
+        rgba(234, 232, 232, 0.12) 50%,
+        rgba(255,255,255,0.04) 100%);
+      border: 1.5px solid rgba(240, 235, 235, 0.35);
+      backdrop-filter: blur(2px);
+      animation: floatUp var(--dur, 5s) ease-in-out infinite,
+                 drift     var(--drift-dur, 7s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      pointer-events: none;
+    }
+ 
+    /* ── Inner shine dot ── */
+    .bubble::before {
+      content: '';
+      position: absolute;
+      top: 18%; left: 22%;
+      width: 28%; height: 18%;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.55);
+      filter: blur(2px);
+    }
+ 
+    /* ── Hero overlay ── */
+    .hero-overlay {
+      background: linear-gradient(
+        135deg,
+        rgba(10, 60, 40, 0.82) 0%,
+        rgba(20, 90, 60, 0.72) 50%,
+        rgba(15, 70, 55, 0.80) 100%
+      );
+    }
+ 
+    /* ── Breadcrumb separator ── */
+    .sep { opacity: 0.65; }
+  
+    
+
+     /* Animated underline on heading highlight */
+    .heading-hi {
+      position: relative;
+      color: #f5c518;
+    }
+    .heading-hi::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 3px;
+      background: #f5c518;
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: ulGrow 0.9s cubic-bezier(.22,1,.36,1) 1.3s forwards;
+    }
+    @keyframes ulGrow { to { transform: scaleX(1); } }
+ 
+    /* Grid bg */
+    .grid-bg {
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
   </style>
 </head>
 
 <body class="overflow-x-hidden font-mont antialiased text-gray-900 bg-white">
-  <div class="bg-[#2a7a2a] text-white text-sm px-4 py-2">
+   <!--top navbar-->
+ <div class="bg-[#2a7a2a] text-white text-sm px-4 py-2">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left">
+
       <p class="text-white/90">
         We are creative, cleaning team ambitious and ready for challenges!
         <a href="#" class="text-[#f5c518] font-semibold hover:underline ml-1">Hire Us!</a>
       </p>
 
-      <div class="flex flex-wrap items-center justify-center gap-4 text-white/90">
+      <div class="flex items-center gap-4 text-white/90">
         <span class="flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -107,11 +317,15 @@
           2972 Westheimer Rd. Santa Ana.
         </span>
       </div>
+
     </div>
   </div>
-
-  <nav class="bg-white shadow-md sticky top-0 z-50">
+<!--navbar-->
+  <nav class="bg-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+
+
+      <!--logo-->
       <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
         <div class="w-10 h-10 bg-[#2a7a2a] rounded-full flex items-center justify-center">
           <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -124,50 +338,82 @@
       </a>
 
       <ul class="hidden md:flex items-center gap-8 text-gray-800 font-semibold text-base tracking-wide">
-        <li><a href="index.html" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">Home</a></li>
-        <li><a href="about.html" class="text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-[#2a7a2a]">About</a></li>
-        <li><a href="index.html#services-carousel" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">Services</a></li>
-        <li><a href="#footer" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">Contact</a></li>
+        <li>
+          <a href="#" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="about.html" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
+            About
+          </a>
+        </li>
+        <li>
+          <a href="services.html" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
+            Services
+          </a>
+        </li>
+        <li>
+          <a href="contact.html" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
+            Contact
+          </a>
+        </li>
       </ul>
 
       <div class="hidden md:flex items-center gap-4">
-        <button class="relative text-gray-600 hover:text-[#2a7a2a] transition-colors" aria-label="Cart">
+
+        <button class="relative text-gray-600 hover:text-[#2a7a2a] transition-colors">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
           <span class="absolute -top-2 -right-2 bg-[#2a7a2a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </button>
-        <a href="#quote" class="flex items-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 shadow-sm hover:shadow-md text-sm">
+
+        <button class="text-gray-600 hover:text-[#2a7a2a] transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
+          </svg>
+        </button>
+
+        <a href="#"
+          class="flex items-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 shadow-sm hover:shadow-md text-sm">
           Make Appointment
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/>
           </svg>
         </a>
+
       </div>
 
       <div class="flex md:hidden items-center gap-3">
-        <button class="relative text-gray-600" aria-label="Cart">
+
+        <button class="relative text-gray-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
           <span class="absolute -top-2 -right-2 bg-[#2a7a2a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </button>
-        <button id="hamburger" class="flex flex-col gap-[5px] p-1" onclick="toggleMenu()" aria-label="Open menu">
+
+        <button id="hamburger" class="flex flex-col gap-[5px] p-1" onclick="toggleMenu()">
           <span class="block w-6 h-0.5 bg-gray-700 rounded"></span>
           <span class="block w-6 h-0.5 bg-gray-700 rounded"></span>
           <span class="block w-6 h-0.5 bg-gray-700 rounded"></span>
         </button>
+
       </div>
+
     </div>
 
     <div id="mobile-menu">
       <ul class="flex flex-col px-6 pb-5 pt-3 gap-5 text-gray-800 font-semibold text-base tracking-wide border-t border-gray-100">
         <li><a href="index.html" class="block hover:text-[#2a7a2a] transition-colors">Home</a></li>
-        <li><a href="about.html" class="block text-[#2a7a2a]">About</a></li>
-        <li><a href="index.html#services-carousel" class="block hover:text-[#2a7a2a] transition-colors">Services</a></li>
-        <li><a href="#footer" class="block hover:text-[#2a7a2a] transition-colors">Contact</a></li>
+        <li><a href="about.html" class="block hover:text-[#2a7a2a] transition-colors">About</a></li>
+        <li><a href="services.html" class="block hover:text-[#2a7a2a] transition-colors">Services</a></li>
+        <li><a href="contact.html" class="block hover:text-[#2a7a2a] transition-colors">Contact</a></li>
+
         <li class="pt-2">
-          <a href="#quote" class="flex items-center justify-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 text-sm w-full">
+          <a href="#"
+            class="flex items-center justify-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 text-sm w-full">
             Make Appointment
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/>
@@ -176,7 +422,86 @@
         </li>
       </ul>
     </div>
+
   </nav>
+
+  <!-- ══════════════ HERO SECTION ══════════════ -->
+  <section class="relative w-full overflow-hidden" style="height: 340px;">
+ 
+    <!-- Background photo -->
+    <div class="absolute inset-0 bg-cover bg-center"
+         style="background-image: url('https://img.magnific.com/free-photo/professional-cleaning-service-person-using-steam-cleaner-office_23-2150520602.jpg');">
+    </div>
+ 
+    <!-- Dark green overlay -->
+    <div class="hero-overlay absolute inset-0"></div>
+ 
+    <!-- ── BUBBLES ── -->
+ 
+    <!-- Left cluster -->
+    <div class="bubble" style="width:72px;height:72px; left:4%; bottom:12%;
+         --dur:6s; --drift-dur:8s; --delay:0s;"></div>
+ 
+    <div class="bubble" style="width:44px;height:44px; left:7%; bottom:42%;
+         --dur:4.5s; --drift-dur:6s; --delay:-1.5s;"></div>
+ 
+    <div class="bubble" style="width:28px;height:28px; left:2%; bottom:60%;
+         --dur:5.5s; --drift-dur:7s; --delay:-3s;"></div>
+ 
+    <div class="bubble" style="width:56px;height:56px; left:12%; bottom:28%;
+         --dur:7s; --drift-dur:9s; --delay:-2s;"></div>
+ 
+    <div class="bubble" style="width:18px;height:18px; left:9%; bottom:72%;
+         --dur:4s; --drift-dur:5.5s; --delay:-0.8s;"></div>
+ 
+    <!-- Centre-left (paper roll icon area) -->
+    <div class="bubble" style="width:48px;height:48px; left:30%; top:10%;
+         --dur:5s; --drift-dur:7s; --delay:-1s;"></div>
+ 
+    <div class="bubble" style="width:26px;height:26px; left:35%; top:35%;
+         --dur:6.5s; --drift-dur:8s; --delay:-3.5s;"></div>
+ 
+    <!-- Right cluster -->
+    <div class="bubble" style="width:64px;height:64px; right:5%; bottom:8%;
+         --dur:5.8s; --drift-dur:7.5s; --delay:-0.5s;"></div>
+ 
+    <div class="bubble" style="width:38px;height:38px; right:10%; bottom:50%;
+         --dur:4.8s; --drift-dur:6.5s; --delay:-2.2s;"></div>
+ 
+    <div class="bubble" style="width:22px;height:22px; right:3%; bottom:72%;
+         --dur:6s; --drift-dur:8s; --delay:-4s;"></div>
+ 
+    <div class="bubble" style="width:50px;height:50px; right:18%; top:8%;
+         --dur:7.2s; --drift-dur:9.5s; --delay:-1.8s;"></div>
+ 
+    <div class="bubble" style="width:16px;height:16px; right:22%; bottom:35%;
+         --dur:3.8s; --drift-dur:5s; --delay:-0.3s;"></div>
+ 
+    <!-- Stray mid-screen extras -->
+    <div class="bubble" style="width:32px;height:32px; left:50%; top:15%;
+         --dur:5.2s; --drift-dur:7s; --delay:-2.7s;"></div>
+ 
+    <div class="bubble" style="width:20px;height:20px; left:58%; bottom:20%;
+         --dur:6.3s; --drift-dur:8.5s; --delay:-1.2s;"></div>
+ 
+    <!-- ── TEXT CONTENT ── -->
+    <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
+ 
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm mb-3" style="opacity:0.85; letter-spacing:0.04em;">
+        
+       
+        <span class="font-medium">About us </span>
+      </nav>
+ 
+      <!-- Heading -->
+      <h1 class="text-5xl font-bold tracking-tight drop-shadow-lg"
+          style="text-shadow: 0 2px 24px rgba(0,0,0,0.4); letter-spacing:-0.01em;">
+        Who we are
+      </h1>
+ 
+    </div>
+  </section>
 
   <main>
     <section class="relative overflow-hidden bg-[#f7f6f0]">

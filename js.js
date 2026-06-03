@@ -187,118 +187,255 @@ if (canvas) {
   });
 
   ////services section
-  document.addEventListener("DOMContentLoaded", () => {
+////services section
+document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.getElementById("services-carousel");
   const dotsContainer = document.getElementById("carousel-dots");
   const prevBtn = document.getElementById("prev-btn");
   const nextBtn = document.getElementById("next-btn");
-  
+
   if (!carousel || !dotsContainer) return;
 
   const cards = Array.from(carousel.children);
-  let activeIndex = 0;
-  let autoplayTimer = null;
-  const autoplayDelay = 3000;
-
   if (!cards.length) return;
 
-  // 1. DYNAMICALLY GENERATE DOT INDICATORS
-  function setupDots() {
-    dotsContainer.innerHTML = "";
-    cards.forEach((_, index) => {
-      const dot = document.createElement("button");
-      dot.className = "h-2 rounded-full transition-all duration-300";
-      dot.setAttribute("aria-label", `Go to service slide ${index + 1}`);
-      dot.style.backgroundColor = index === activeIndex ? "#3cd175" : "#d1d5db";
-      dot.style.width = index === activeIndex ? "2rem" : "0.5rem";
-      
-      dot.addEventListener("click", () => {
-        stopAutoplay();
-        scrollToIndex(index);
-        startAutoplay();
-      });
-      dotsContainer.appendChild(dot);
-    });
+  // ⚡ DECREASED DELAY: Autoplay moves faster (2000ms instead of 3000ms)
+  const AUTOPLAY_DELAY = 2000; 
+  let activeIndex = 0;
+  let autoplayTimer = null;
+  let isScrolling = false;
+
+  let cardWidth = 0;
+  let gap = 0;
+
+  function measureCard() {
+    cardWidth = cards[0].getBoundingClientRect().width;
+    gap = parseFloat(window.getComputedStyle(carousel).gap) || 0;
   }
 
-  // 2. UPDATE ACTIVE DOT LAYOUTS
+  // ─── Dots ───────────────────────────────────────────────────────────────────
+  // Pre-compiled dot template for ultra-fast DOM generation
+  const activeClass = "h-2 rounded-full transition-all duration-200 bg-[#3cd175] w-8";
+  const inactiveClass = "h-2 rounded-full transition-all duration-200 bg-[#d1d5db] w-2";
+
+  function setupDots() {
+    const fragment = document.createDocumentFragment();
+    cards.forEach((_, i) => {
+      const dot = document.createElement("button");
+      dot.className = i === activeIndex ? activeClass : inactiveClass;
+      dot.setAttribute("aria-label", `Go to service slide ${i + 1}`);
+      dot.addEventListener("click", () => {
+        stopAutoplay();
+        goTo(i);
+        startAutoplay();
+      });
+      fragment.appendChild(dot);
+    });
+    dotsContainer.innerHTML = "";
+    dotsContainer.appendChild(fragment);
+  }
+
   function updateDots() {
     const dots = dotsContainer.children;
     for (let i = 0; i < dots.length; i++) {
-      if (i === activeIndex) {
-        dots[i].style.backgroundColor = "#3cd175";
-        dots[i].style.width = "2rem";
-      } else {
-        dots[i].style.backgroundColor = "#d1d5db";
-        dots[i].style.width = "0.5rem";
-      }
+      dots[i].className = i === activeIndex ? activeClass : inactiveClass;
     }
   }
 
-  // 3. SCROLL HANDLING LOGIC
-  function scrollToIndex(index) {
+  // ─── Scrolling ──────────────────────────────────────────────────────────────
+  function goTo(index) {
     if (index < 0 || index >= cards.length) return;
-    
-    const cardWidth = cards[0].offsetWidth;
-    // Get the CSS gaps between flex items
-    const gap = parseFloat(window.getComputedStyle(carousel).gap) || 0;
-    
+    activeIndex = index;
+    isScrolling = true;
+
+    // NOTE: For true customized "fast" speeds, handle this via CSS `scroll-behavior`
     carousel.scrollTo({
       left: index * (cardWidth + gap),
-      behavior: "smooth"
+      behavior: "smooth",
     });
-    
-    activeIndex = index;
+
     updateDots();
+
+    clearTimeout(carousel._scrollLock);
+    // ⚡ DECREASED LOCKOUT: Lock released faster (150ms) to match Snappy CSS feel
+    carousel._scrollLock = setTimeout(() => {
+      isScrolling = false;
+    }, 150); 
   }
 
-  // 4. ARROW BUTTON CLICK HANDLERS
+  // ─── Manual swipe detection (Debounced/Throttled via requestAnimationFrame) ──
+  let scrollTimeout;
+  carousel.addEventListener("scroll", () => {
+    if (isScrolling) return;
+
+    if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
+    
+    scrollTimeout = requestAnimationFrame(() => {
+      const calculated = Math.round(carousel.scrollLeft / (cardWidth + gap));
+      if (calculated !== activeIndex && calculated >= 0 && calculated < cards.length) {
+        activeIndex = calculated;
+        updateDots();
+      }
+    });
+  }, { passive: true }); // ⚡ PASSIVE EVENT: Speeds up touch/scroll performance
+
+  // ─── Arrow buttons ──────────────────────────────────────────────────────────
   prevBtn?.addEventListener("click", () => {
     stopAutoplay();
-    let targetIndex = activeIndex - 1;
-    if (targetIndex < 0) targetIndex = cards.length - 1; // Loop back to end
-    scrollToIndex(targetIndex);
+    goTo((activeIndex - 1 + cards.length) % cards.length);
     startAutoplay();
   });
 
   nextBtn?.addEventListener("click", () => {
     stopAutoplay();
-    let targetIndex = activeIndex + 1;
-    if (targetIndex >= cards.length) targetIndex = 0; // Loop back to start
-    scrollToIndex(targetIndex);
+    goTo((activeIndex + 1) % cards.length);
     startAutoplay();
   });
 
-  // 5. UPDATE ACTIVE STATE ON MANUAL PHONE SWIPES / SCROLLS
-  carousel.addEventListener("scroll", () => {
-    const cardWidth = cards[0].offsetWidth;
-    const gap = parseFloat(window.getComputedStyle(carousel).gap) || 0;
-    
-    // Calculate current slide based on current layout positions
-    const calculatedIndex = Math.round(carousel.scrollLeft / (cardWidth + gap));
-    
-    if (calculatedIndex !== activeIndex && calculatedIndex >= 0 && calculatedIndex < cards.length) {
-      activeIndex = calculatedIndex;
-      updateDots();
-    }
-  });
-
-  // 6. AUTOPLAY CONTROLS
+  // ─── Autoplay ───────────────────────────────────────────────────────────────
   function startAutoplay() {
-    stopAutoplay();
+    if (autoplayTimer) return; // Prevent duplicate intervals
     autoplayTimer = setInterval(() => {
-      const nextIndex = (activeIndex + 1) % cards.length;
-      scrollToIndex(nextIndex);
-    }, autoplayDelay);
+      goTo((activeIndex + 1) % cards.length);
+    }, AUTOPLAY_DELAY);
   }
 
   function stopAutoplay() {
-    if (!autoplayTimer) return;
     clearInterval(autoplayTimer);
     autoplayTimer = null;
   }
 
-  // Initialize Slider Configurations
-  setupDots();
-  startAutoplay();
+  carousel.addEventListener("mouseenter", stopAutoplay);
+  carousel.addEventListener("touchstart", stopAutoplay, { passive: true });
+  carousel.addEventListener("mouseleave", startAutoplay);
+  carousel.addEventListener("touchend", startAutoplay, { passive: true });
+
+  // ─── Resize handling ────────────────────────────────────────────────────────
+  // Debounced resize observer to prevent layout thrashing on window drag
+  let resizeTimeout;
+  const ro = new ResizeObserver(() => {
+    if (resizeTimeout) cancelAnimationFrame(resizeTimeout);
+    resizeTimeout = requestAnimationFrame(() => {
+      measureCard();
+      carousel.scrollTo({ left: activeIndex * (cardWidth + gap), behavior: "instant" });
+    });
+  });
+  ro.observe(carousel);
+
+  // ─── Init ───────────────────────────────────────────────────────────────────
+  requestAnimationFrame(() => {
+    measureCard();
+    setupDots();
+    startAutoplay();
+  });
 });
+
+
+////services page
+// Mobile menu
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const hamburger = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    hamburger.classList.toggle('open');
+  }
+
+ 
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+  
+//////bar tracker
+// ── Items to scroll
+  const items = [
+    'Home Cleaning',
+    'Office Cleaning',
+    'First Cleaning',
+    'Deep Cleaning',
+    'Carpet Washing',
+    'Window Cleaning',
+    'Post-Construction',
+    'Eco-Friendly',
+    'Move-In Cleaning',
+    'Pressure Washing',
+  ];
+ 
+  // ── Build one set of items (star + text)
+  function buildSet() {
+    return items.map((label, i) => {
+      const delays = ['', 'animate-star-spin-d1', 'animate-star-spin-d2', 'animate-star-spin-d3'];
+      const delayClass = delays[i % delays.length];
+      return `
+        <span class="inline-flex items-center gap-5 mx-6">
+          <!-- Star separator -->
+          <span class="animate-star-spin ${delayClass} inline-block text-[#f5c518] text-2xl leading-none" style="filter:drop-shadow(0 0 4px rgba(245,197,24,0.6))">✦</span>
+          <!-- Outlined label -->
+          <span class="text-outline text-3xl sm:text-4xl font-black tracking-tight uppercase">
+            ${label}
+          </span>
+        </span>
+      `;
+    }).join('');
+  }
+ 
+  // ── Inject two identical sets so the loop is seamless
+  const track = document.getElementById('ticker');
+  const set = buildSet();
+  track.innerHTML = set + set; // duplicate = seamless infinite scroll
+
+
+  
+     /* ── Floating particles ── */
+  const pc = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    const s = Math.random() * 3.5 + 1.5;
+    p.style.cssText = `
+      position:absolute;
+      width:${s}px; height:${s}px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.35);
+      left:${Math.random()*100}%;
+      bottom:${Math.random()*35}%;
+      animation:particleDrift ${4+Math.random()*6}s linear ${Math.random()*5}s infinite;
+    `;
+    pc.appendChild(p);
+  }
+ 
+  /* ── Mist burst on step hover ── */
+  document.querySelectorAll('.step-circle').forEach(circle => {
+    circle.closest('.step-group').addEventListener('mouseenter', () => {
+      for (let i = 0; i < 7; i++) {
+        const m = document.createElement('div');
+        const angle = (i / 7) * 360;
+        const tx = Math.cos(angle * Math.PI / 180) * 52;
+        const ty = Math.sin(angle * Math.PI / 180) * 52;
+        m.style.cssText = `
+          position:absolute;
+          width:7px; height:7px;
+          border-radius:50%;
+          background:rgba(245,197,24,0.65);
+          left:50%; top:50%;
+          margin-left:-3.5px; margin-top:-3.5px;
+          --tx:${tx}px; --ty:${ty}px;
+          animation:mistRise 0.65s ease forwards;
+          pointer-events:none;
+          z-index:30;
+        `;
+        circle.parentElement.appendChild(m);
+        setTimeout(() => m.remove(), 650);
+      }
+    });
+  });
+
+  
