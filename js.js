@@ -439,3 +439,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hireBtn = document.getElementById('hireUsBtn');
+
+  if (hireBtn) {
+    hireBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Redirects the browser to your separate contact page
+      window.location.href = 'contact.html'; 
+    });
+  }
+});
