@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shinynove – Business Section</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              green: '#2a7a2a',
+              yellow: '#f5c518',
+              orange: '#f57c00',
+              cream: '#fafaf7',
+              dark: '#111614',
+            }
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(28px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            marquee: {
+              '0%': { transform: 'translateX(0)' },
+              '100%': { transform: 'translateX(-50%)' },
+            }
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both',
+            'marquee': 'marquee 28s linear infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background: #fff; }
+
+    /* ── Ticker label pill ── */
+    .ticker-label {
+      writing-mode: horizontal-tb;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    /* ── Scroll strip ── */
+    .strip-track {
+      display: flex;
+      gap: 0;
+      will-change: transform;
+      cursor: grab;
+      user-select: none;
+    }
+    .strip-track:active { cursor: grabbing; }
+
+    .strip-slide {
+      flex: 0 0 auto;
+      overflow: hidden;
+      position: relative;
+    }
+    .strip-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1), filter 0.4s;
+      filter: saturate(0.9) brightness(0.96);
+    }
+    .strip-slide:hover img {
+      transform: scale(1.06);
+      filter: saturate(1.1) brightness(1.02);
+    }
+
+    /* overlay label per slide */
+    .slide-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 24px 20px;
+      background: linear-gradient(to top, rgba(10,22,15,0.82) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .strip-slide:hover .slide-label { opacity: 1; }
+
+    /* progress bar */
+    #scroll-progress {
+      transition: width 0.1s linear;
+    }
+
+    /* dot nav */
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #ccc;
+      transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: #2a7a2a;
+      transform: scale(1.5);
+    }
+
+    /* CTA button */
+    .cta-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.12);
+      transform: translateX(-101%);
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+    .cta-btn:hover::after { transform: translateX(0); }
+
+    /* stagger delays */
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-450 { animation-delay: 0.45s; }
+
+    /* drag momentum */
+    .strip-wrap { overflow: hidden; }
+  </style>
+</head>
+
+<body class="font-body bg-white text-brand-dark selection:bg-brand-yellow selection:text-brand-dark">
+
+<!-- ════════════════════════════════════════
+     SECTION
+════════════════════════════════════════ -->
+<section class="w-full pt-16 pb-0 overflow-hidden" id="business-section">
+
+  <!-- ── Top row: heading + CTA ── -->
+  <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+
+    <!-- Left: eyebrow + heading -->
+    <div class="max-w-xl opacity-0 animate-fade-up delay-100">
+      <p class="ticker-label text-brand-green mb-3 tracking-widest">Everything you need, all in one place.</p>
+      <h2 class="font-display text-[clamp(2rem,4.5vw,3.2rem)] font-extrabold leading-[1.1] tracking-tight text-brand-dark">
+        We built for Business —<br />
+        <span class="text-brand-green">Explore the Space.</span>
+      </h2>
+    </div>
+
+    <!-- Right: CTA + nav -->
+    <div class="flex flex-col items-start md:items-end gap-5 opacity-0 animate-fade-up delay-300">
+      <a href="#" class="cta-btn inline-flex items-center gap-3 bg-brand-yellow text-brand-dark font-display font-bold text-[13px] tracking-[0.12em] uppercase px-7 py-4 hover:bg-brand-orange hover:text-white transition-colors duration-300">
+        Learn more
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+
+      <!-- Arrow controls -->
+      <div class="flex items-center gap-3">
+        <button id="btn-prev" aria-label="Scroll left"
+          class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-brand-green hover:bg-brand-green hover:text-white transition-all duration-200 text-gray-500">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="btn-next" aria-label="Scroll right"
+          class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-brand-green hover:bg-brand-green hover:text-white transition-all duration-200 text-gray-500">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <!-- dot nav -->
+        <div id="dots" class="flex items-center gap-2 ml-2"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Progress bar ── -->
+  <div class="max-w-7xl mx-auto px-6 md:px-12 mb-4 opacity-0 animate-fade-up delay-300">
+    <div class="h-[2px] bg-gray-100 rounded-full overflow-hidden w-full">
+      <div id="scroll-progress" class="h-full bg-brand-green rounded-full" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ── Photo strip ── -->
+  <div class="strip-wrap w-full opacity-0 animate-fade-up delay-450" id="strip-wrap">
+    <div class="strip-track" id="strip-track">
+
+      <!-- Slide 1 -->
+      <div class="strip-slide w-[72vw] md:w-[38vw] lg:w-[30vw] h-[52vw] md:h-[28vw] lg:h-[22vw] max-h-[480px]">
+        <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&q=80" alt="Office team cleaning" />
+        <div class="slide-label">
+          <p class="font-display font-bold text-white text-base leading-tight">Office Deep Clean</p>
+          <p class="text-white/60 text-xs mt-1 font-body">Corporate facilities</p>
+        </div>
+      </div>
+
+      <!-- Slide 2 — wide center hero -->
+      <div class="strip-slide w-[80vw] md:w-[44vw] lg:w-[36vw] h-[52vw] md:h-[28vw] lg:h-[22vw] max-h-[480px]">
+        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=900&q=80" alt="Professional cleaner mopping" />
+        <div class="slide-label">
+          <p class="font-display font-bold text-white text-base leading-tight">Floor Sanitisation</p>
+          <p class="text-white/60 text-xs mt-1 font-body">Premium execution</p>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="strip-slide w-[60vw] md:w-[28vw] lg:w-[22vw] h-[52vw] md:h-[28vw] lg:h-[22vw] max-h-[480px]">
+        <img src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=700&q=80" alt="Window cleaning" />
+        <div class="slide-label">
+          <p class="font-display font-bold text-white text-base leading-tight">Window Detail</p>
+          <p class="text-white/60 text-xs mt-1 font-body">Streak-free finish</p>
+        </div>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="strip-slide w-[70vw] md:w-[35vw] lg:w-[28vw] h-[52vw] md:h-[28vw] lg:h-[22vw] max-h-[480px]">
+        <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=800&q=80" alt="Residential kitchen clean" />
+        <div class="slide-label">
+          <p class="font-display font-bold text-white text-base leading-tight">Residential Kitchens</p>
+          <p class="text-white/60 text-xs mt-1 font-body">Home care division</p>
+        </div>
+      </div>
+
+      <!-- Slide 5 -->
+      <div class="strip-slide w-[65vw] md:w-[32vw] lg:w-[25vw] h-[52vw] md:h-[28vw] lg:h-[22vw] max-h-[480px]">
+        <img src="https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=800&q=80" alt="Luxury estate cleaning" />
+        <div class="slide-label">
+          <p class="font-display font-bold text-white text-base leading-tight">Luxury Estates</p>
+          <p class="text-white/60 text-xs mt-1 font-body">White-glove standard</p>
+        </div>
+      </div>
+
+      <!-- Slide 6 -->
+      <div class="strip-slide w-[72vw] md:w-[36vw] lg:w-[28vw] h-[52vw] md:h-[28vw] lg:h-[22vw] max-h-[480px]">
+        <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=800&q=80" alt="Hotel turnover service" />
+        <div class="slide-label">
+          <p class="font-display font-bold text-white text-base leading-tight">Hospitality Turnover</p>
+          <p class="text-white/60 text-xs mt-1 font-body">Five-star ready</p>
+        </div>
+      </div>
+
+      <!-- Slide 7 — closing CTA card -->
+      <div class="strip-slide w-[58vw] md:w-[26vw] lg:w-[20vw] h-[52vw] md:h-[28vw] lg:h-[22vw] max-h-[480px] bg-brand-green flex flex-col items-center justify-center gap-5 px-8 cursor-pointer group"
+           onclick="window.location.href='#'">
+        <div class="w-14 h-14 rounded-full border-2 border-white/30 flex items-center justify-center group-hover:bg-white transition-colors duration-300">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-brand-green transition-colors">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+        <p class="font-display font-bold text-white text-center text-lg leading-tight">View all services</p>
+        <p class="text-white/50 text-xs text-center font-body leading-relaxed">6 specialist divisions available across the Netherlands</p>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════
+     JS: Scroll, drag, dots, progress
+════════════════════════════════════════ -->
+<script>
+  const track = document.getElementById('strip-track');
+  const wrap  = document.getElementById('strip-wrap');
+  const progressBar = document.getElementById('scroll-progress');
+  const dotsContainer = document.getElementById('dots');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+
+  const slides = Array.from(track.querySelectorAll('.strip-slide'));
+  const SLIDE_STEP = () => slides[0].offsetWidth + 2; // gap=0 so just width
+  let currentX = 0;
+  let targetX = 0;
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragStartScroll = 0;
+  let velocity = 0;
+  let lastX = 0;
+  let raf;
+
+  // ── Build dots ──
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    d.addEventListener('click', () => scrollToSlide(i));
+    dotsContainer.appendChild(d);
+  });
+
+  function getDots() { return Array.from(dotsContainer.querySelectorAll('.dot')); }
+
+  function maxScroll() {
+    return track.scrollWidth - wrap.offsetWidth;
+  }
+
+  function clamp(val, min, max) {
+    return Math.min(Math.max(val, min), max);
+  }
+
+  function updateProgress(x) {
+    const pct = maxScroll() > 0 ? (x / maxScroll()) * 100 : 0;
+    progressBar.style.width = clamp(pct, 0, 100) + '%';
+
+    // active dot
+    const idx = Math.round(x / SLIDE_STEP());
+    getDots().forEach((d, i) => d.classList.toggle('active', i === clamp(idx, 0, slides.length - 1)));
+  }
+
+  function applyX(x) {
+    track.style.transform = `translateX(${-x}px)`;
+    updateProgress(x);
+  }
+
+  // Smooth lerp loop
+  function tick() {
+    if (!isDragging) {
+      currentX += (targetX - currentX) * 0.09;
+      if (Math.abs(targetX - currentX) < 0.3) currentX = targetX;
+    }
+    applyX(currentX);
+    raf = requestAnimationFrame(tick);
+  }
+  tick();
+
+  function scrollToSlide(i) {
+    const x = clamp(slides[i].offsetLeft, 0, maxScroll());
+    targetX = x;
+  }
+
+  // Buttons
+  btnNext.addEventListener('click', () => {
+    const idx = Math.round(currentX / SLIDE_STEP());
+    scrollToSlide(Math.min(idx + 1, slides.length - 1));
+  });
+  btnPrev.addEventListener('click', () => {
+    const idx = Math.round(currentX / SLIDE_STEP());
+    scrollToSlide(Math.max(idx - 1, 0));
+  });
+
+  // ── Drag (mouse) ──
+  track.addEventListener('mousedown', e => {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartScroll = currentX;
+    lastX = e.clientX;
+    velocity = 0;
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(tick);
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    velocity = e.clientX - lastX;
+    lastX = e.clientX;
+    const delta = dragStartX - e.clientX;
+    currentX = clamp(dragStartScroll + delta, 0, maxScroll());
+    targetX = currentX;
+    applyX(currentX);
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    targetX = clamp(currentX - velocity * 4, 0, maxScroll());
+    // snap to nearest slide
+    const nearest = Math.round(targetX / SLIDE_STEP());
+    scrollToSlide(clamp(nearest, 0, slides.length - 1));
+  });
+
+  // ── Touch ──
+  let touchStartX = 0;
+  let touchScrollStart = 0;
+
+  track.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchScrollStart = currentX;
+    lastX = touchStartX;
+    velocity = 0;
+    isDragging = true;
+  }, { passive: true });
+
+  track.addEventListener('touchmove', e => {
+    const dx = touchStartX - e.touches[0].clientX;
+    velocity = e.touches[0].clientX - lastX;
+    lastX = e.touches[0].clientX;
+    currentX = clamp(touchScrollStart + dx, 0, maxScroll());
+    targetX = currentX;
+    applyX(currentX);
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    isDragging = false;
+    targetX = clamp(currentX - velocity * 4, 0, maxScroll());
+    const nearest = Math.round(targetX / SLIDE_STEP());
+    scrollToSlide(clamp(nearest, 0, slides.length - 1));
+  });
+
+  // ── Keyboard ──
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') btnNext.click();
+    if (e.key === 'ArrowLeft')  btnPrev.click();
+  });
+
+  // ── IntersectionObserver: animate-in ──
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.opacity-0').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    io.observe(el);
+  });
+</script>
+
+</body>
+</html>
