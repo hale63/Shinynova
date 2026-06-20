@@ -115,6 +115,60 @@
       max-height: 0; overflow: hidden; opacity: 0;
     }
     #mobile-menu.open { max-height: 500px; opacity: 1; }
+
+    /* Language Switcher */
+    .lang-switcher { position: relative; }
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 9999px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: #374151;
+      transition: all 0.25s ease;
+    }
+    .lang-btn:hover { border-color: #2a7a2a; color: #2a7a2a; }
+    .lang-btn svg.chevron { width: 14px; height: 14px; transition: transform 0.25s ease; }
+    .lang-switcher.open .lang-btn svg.chevron { transform: rotate(180deg); }
+    .lang-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+      min-width: 160px; overflow: hidden;
+      opacity: 0; visibility: hidden;
+      transform: translateY(-8px) scale(0.96);
+      transition: all 0.25s cubic-bezier(.22,1,.36,1);
+      z-index: 100;
+    }
+    .lang-switcher.open .lang-dropdown {
+      opacity: 1; visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    .lang-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: #374151;
+      transition: background 0.15s ease;
+      text-decoration: none;
+    }
+    .lang-option:hover { background: #f0fdf4; color: #2a7a2a; }
+    .lang-option.active { background: #f0fdf4; color: #2a7a2a; }
+    .lang-option .flag-icon { width: 22px; height: 16px; border-radius: 3px; flex-shrink: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .lang-btn .flag-icon { width: 22px; height: 16px; border-radius: 3px; flex-shrink: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .mobile-lang-wrap {
+      display: flex; gap: 8px; padding-top: 8px;
+      border-top: 1px solid #f3f4f6;
+    }
+    .mobile-lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 9999px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      font-size: 13px; font-weight: 600; color: #374151;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .mobile-lang-btn:hover, .mobile-lang-btn.active {
+      border-color: #2a7a2a; color: #2a7a2a; background: #f0fdf4;
+    }
+    .mobile-lang-btn .flag-icon { width: 22px; height: 16px; border-radius: 3px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     #hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
     #hamburger.open span:nth-child(2) { opacity: 0; }
     #hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
@@ -468,7 +522,7 @@
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left">
 
       <p class="text-white/90">
-        We are creative, cleaning team ambitious and ready for challenges!
+        Creative. Ambitious. Ready to clean and excel.
         <a href="#" class="text-[#f5c518] font-semibold hover:underline ml-1">Hire Us!</a>
       </p>
 
@@ -477,14 +531,14 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
-          support@gmail.com
+        info@shinynove.com
         </span>
         <span class="flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
-          2972 Westheimer Rd. Santa Ana.
+          Nieuwstraat 312, 3201EG Spijkenisse
         </span>
       </div>
 
@@ -495,19 +549,18 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
 
-      <!--logo-->
-      <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
-        <div class="w-10 h-10 bg-[#2a7a2a] rounded-full flex items-center justify-center">
-          <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-          </svg>
-        </div>
-        <span class="text-2xl font-bold text-gray-900 tracking-tight">
-          Shiny<span class="text-[#2a7a2a]">nove</span>
-        </span>
-      </a>
+     
+<!--logo-->
+<a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+  <div class="w-16 h-10 rounded-full flex items-center justify-center">
+    <img src="assets/logo.png" alt="Shinynove Logo">
+  </div>
+  <span class="text-xl font-extrabold tracking-tight">
+    <span class="text-gray-900">Shiny</span><span class="text-[#2a7a2a] italic">nove</span>
+  </span>
+</a>
 
-      <ul class="hidden md:flex items-center gap-8 text-gray-800 font-semibold text-base tracking-wide">
+      <ul class="hidden md:flex items-center gap-10 text-gray-800 font-semibold text-xl text-bold tracking-wide">
         <li>
           <a href="index.html" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
             Home
@@ -532,37 +585,36 @@
 
       <div class="hidden md:flex items-center gap-4">
 
-        <button class="relative text-gray-600 hover:text-[#2a7a2a] transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-          </svg>
-          <span class="absolute -top-2 -right-2 bg-[#2a7a2a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-        </button>
-
-        <button class="text-gray-600 hover:text-[#2a7a2a] transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
-          </svg>
-        </button>
-
-        <a href="#"
-          class="flex items-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 shadow-sm hover:shadow-md text-sm">
-          Make Appointment
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/>
-          </svg>
-        </a>
+        <!-- Language Switcher -->
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" onclick="toggleLangDropdown()" aria-label="Select language">
+            <span class="flag-icon" id="current-flag">
+              <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="160" fill="#AE1C28"/><rect y="160" width="640" height="160" fill="#FFF"/><rect y="320" width="640" height="160" fill="#21468B"/></svg>
+            </span>
+            <span id="current-lang-label">NL</span>
+            <svg class="chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="lang-dropdown">
+            <a href="#" class="lang-option active" data-lang="nl" onclick="setLang('nl', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="160" fill="#AE1C28"/><rect y="160" width="640" height="160" fill="#FFF"/><rect y="320" width="640" height="160" fill="#21468B"/></svg>
+              </span>
+              Nederlands
+            </a>
+            <a href="#" class="lang-option" data-lang="en" onclick="setLang('en', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="480" fill="#012169"/><path d="M75 0l244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z" fill="#FFF"/><path d="M424 281l216 159v40L369 281h55zm-184 20l6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z" fill="#C8102E"/><path d="M241 0v480h160V0H241zM0 160v160h640V160H0z" fill="#FFF"/><path d="M273 0v480h96V0h-96zM0 192v96h640v-96H0z" fill="#C8102E"/></svg>
+              </span>
+              English
+            </a>
+          </div>
+        </div>
 
       </div>
 
       <div class="flex md:hidden items-center gap-3">
 
-        <button class="relative text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-          </svg>
-          <span class="absolute -top-2 -right-2 bg-[#2a7a2a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-        </button>
+        
 
         <button id="hamburger" class="flex flex-col gap-[5px] p-1" onclick="toggleMenu()">
           <span class="block w-6 h-0.5 bg-gray-700 rounded"></span>
@@ -575,20 +627,27 @@
     </div>
 
     <div id="mobile-menu">
-      <ul class="flex flex-col px-6 pb-5 pt-3 gap-5 text-gray-800 font-semibold text-base tracking-wide border-t border-gray-100">
+      <ul class="flex flex-col px-12 pb-5 pt-3 gap-5 text-gray-800 font-semibold text-base tracking-wide border-t border-gray-100">
         <li><a href="index.html" class="block hover:text-[#2a7a2a] transition-colors">Home</a></li>
         <li><a href="about.html" class="block hover:text-[#2a7a2a] transition-colors">About</a></li>
         <li><a href="services.html" class="block hover:text-[#2a7a2a] transition-colors">Services</a></li>
         <li><a href="contact.html" class="block hover:text-[#2a7a2a] transition-colors">Contact</a></li>
 
-        <li class="pt-2">
-          <a href="#"
-            class="flex items-center justify-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 text-sm w-full">
-            Make Appointment
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/>
-            </svg>
-          </a>
+        <li>
+          <div class="mobile-lang-wrap">
+            <button class="mobile-lang-btn active" data-lang="nl" onclick="setLang('nl', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="160" fill="#AE1C28"/><rect y="160" width="640" height="160" fill="#FFF"/><rect y="320" width="640" height="160" fill="#21468B"/></svg>
+              </span>
+              NL
+            </button>
+            <button class="mobile-lang-btn" data-lang="en" onclick="setLang('en', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="480" fill="#012169"/><path d="M75 0l244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z" fill="#FFF"/><path d="M424 281l216 159v40L369 281h55zm-184 20l6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z" fill="#C8102E"/><path d="M241 0v480h160V0H241zM0 160v160h640V160H0z" fill="#FFF"/><path d="M273 0v480h96V0h-96zM0 192v96h640v-96H0z" fill="#C8102E"/></svg>
+              </span>
+              EN
+            </button>
+          </div>
         </li>
       </ul>
     </div>
@@ -659,8 +718,7 @@
  
       <!-- Breadcrumb -->
       <nav class="flex items-center gap-2 text-sm mb-3" style="opacity:0.85; letter-spacing:0.04em;">
-        <a href="#" class="hover:underline transition-opacity" style="opacity:0.8;">Home 1</a>
-        <span class="sep text-lg font-light">/</span>
+       
         <span class="font-medium">Our Services</span>
       </nav>
  
@@ -914,16 +972,16 @@
   <!-- ─────── SIDE IMAGES LEFT ─────── -->
   <div class="hidden lg:flex absolute top-1/2 left-0 -translate-y-1/2 flex-col gap-5 pointer-events-none z-10">
     <div class="photo-l1 w-44 rounded-2xl overflow-hidden border border-white/10 ml-2">
-      <img src="assets/"
+      <img src="assets/slider_4.png"
            alt="Sofa cleaning" class="w-full h-32 object-cover brightness-75 saturate-110"/>
       <div class="absolute inset-0 rounded-2xl" style="background:linear-gradient(180deg,transparent 45%,rgba(0,20,0,0.6) 100%)"></div>
     </div>
     <div class="photo-l2 w-44 rounded-2xl overflow-hidden border border-white/10 ml-9">
-      <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80"
+      <img src="assets/about3.webp"
            alt="Kitchen cleaning" class="w-full h-32 object-cover brightness-75 saturate-110"/>
     </div>
     <div class="photo-l3 w-44 rounded-2xl overflow-hidden border border-white/10 ml-3">
-      <img src="https://images.unsplash.com/photo-1527515637462-cff94ebb84ce?w=400&q=80"
+      <img src="assets/service1-2.jpg"
            alt="Floor mopping" class="w-full h-32 object-cover brightness-75 saturate-110"/>
     </div>
   </div>
@@ -939,7 +997,7 @@
            alt="Window cleaning" class="w-full h-32 object-cover brightness-75 saturate-110"/>
     </div>
     <div class="photo-r3 w-44 rounded-2xl overflow-hidden border border-white/10 mr-3">
-      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80"
+      <img src="assets/service1-3.jpg"
            alt="Deep cleaning" class="w-full h-32 object-cover brightness-75 saturate-110"/>
     </div>
   </div>
@@ -1224,92 +1282,156 @@
 
 <!-- ══════════ FOOTER ══════════ -->
 <footer class="bg-[#07110c] text-gray-400 font-sans pt-16 pb-8 relative overflow-hidden border-t border-gray-900">
-
+  
   <div class="fixed right-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-l-xl shadow-xl border border-r-0 border-gray-100 z-50 group cursor-pointer transition-transform hover:-translate-x-1 hidden md:block">
     <div class="text-[#ff8200] relative">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"></path>
+      </svg>
       <span class="absolute -top-1.5 -right-1.5 bg-[#3cd175] w-2 h-2 rounded-full"></span>
     </div>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-16">
+    
+    <div data-reveal="fade-up" data-reveal-stagger class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-16">
+      
+      <div class="lg:col-span-4 bg-[#141f1a] rounded-[2rem] p-8 relative overflow-hidden shadow-xl border-l-[5px] border-[#3cd175] flex flex-col justify-between min-h-[320px]">
+        
+        <!--logo-->
+<a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+  <div class="w-24 h-32 rounded-full flex items-center justify-center">
+    <img src="assets/logo.png" alt="Shinynove Logo">
+  </div>
+  <span class="text-3xl font-extrabold tracking-tight">
+    <span class="text-white">Shiny</span><span class="text-[#2a7a2a] italic">nove</span>
+  </span>
+</a>
 
-      <div class="lg:col-span-4 bg-[#141f1a] rounded-[2rem] p-8 relative overflow-hidden shadow-xl border-l-[5px] border-[#3cd175] flex flex-col justify-between min-h-[280px]">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#3cd175] to-[#ffd200] flex items-center justify-center">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l-1.81-5.096L2.1 14.1 7.19 13.2l.913-5.096.913 5.096 5.09 1.1-5.09 1.604zm7.443-11.316L16.5 9l-.756-4.412L11.25 3.75l4.494-.756L16.5-1.5l.756 4.494 4.494.756-4.494.756z"/></svg>
-          </div>
-          <span class="text-2xl font-bold text-white tracking-tight">Shinynova</span>
-        </div>
-        <div class="flex flex-col gap-4">
-          <a href="tel:+6295550129" class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors">
-            <span class="text-[#ff8200]"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg></span>
-            <span class="text-sm font-medium">+629 555-0129</span>
+        <div class="flex flex-col gap-5">
+          <a href="tel:+31 6 86424118" class="flex items-center gap-4 group/item text-gray-300 hover:text-white transition-colors">
+            <span class="text-[#ff8200] transform group-hover/item:scale-110 transition-transform duration-200">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+            </span>
+            <span class="text-sm font-medium tracking-wide">+31 6 86424118</span>
           </a>
-          <a href="mailto:demo@example.com" class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors">
-            <span class="text-[#ff8200]"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg></span>
-            <span class="text-sm font-medium">demo@example.com</span>
+
+          <a href="mailto:info@shinynove.com" class="flex items-center gap-4 group/item text-gray-300 hover:text-white transition-colors">
+            <span class="text-[#ff8200] transform group-hover/item:scale-110 transition-transform duration-200">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+            </span>
+            <span class="text-sm font-medium tracking-wide">info@shinynove.com</span>
           </a>
-          <div class="flex items-start gap-4 text-gray-300">
-            <span class="text-[#ff8200] pt-0.5 shrink-0"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg></span>
-            <span class="text-sm font-medium leading-relaxed">1901 Thornridge Cir. Shiloh,<br/>Hawaii 81063</span>
+
+          <div class="flex items-start gap-4 group/item text-gray-300">
+            <span class="text-[#ff8200] pt-0.5 shrink-0">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+            </span>
+            <span class="text-sm font-medium leading-relaxed tracking-wide">
+              Nieuwstraat 312, 3201EG Spijkenisse
+            </span>
           </div>
         </div>
+
       </div>
 
       <div class="lg:col-span-8 flex flex-col justify-between pt-4">
-        <div class="flex justify-end mb-8">
-          <a href="#" class="group inline-flex items-center gap-4 text-[#ff8200] hover:text-white font-bold text-base md:text-lg tracking-wide transition-colors">
-            Book A Free Consultation
-            <span class="w-10 h-10 rounded-full bg-[#3cd175] text-gray-900 flex items-center justify-center transform group-hover:rotate-45 transition-all duration-300 shadow-md">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+        
+        <div class="flex justify-end mb-12 lg:mb-6">
+          <a href="contact.html" class="group inline-flex items-center gap-4 text-[#ff8200] hover:text-white font-bold text-base md:text-lg tracking-wide transition-colors">
+            Contact Us
+            <span class="w-10 h-10 rounded-full bg-[#3cd175] text-gray-900 flex items-center justify-center transform group-hover:rotate-45 transition-all duration-300 shadow-md group-hover:shadow-[#3cd175]/20 group-hover:bg-[#4cee85]">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg>
             </span>
           </a>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-gray-900/60 pt-10">
+
+        <div data-reveal="fade-up" data-delay="300" data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 border-t border-gray-900/60 pt-10">
+          
           <div>
             <h3 class="text-[#3cd175] font-bold text-lg mb-6 tracking-wide">Company</h3>
             <ul class="flex flex-col gap-3.5 text-sm font-medium">
               <li><a href="about.html" class="footer-link">About</a></li>
-              <li><a href="#" class="footer-link">Our Mission</a></li>
-              <li><a href="#" class="footer-link">Our Blogs</a></li>
-              <li><a href="#" class="footer-link">Help Center</a></li>
-              <li><a href="#" class="footer-link">Contact Us</a></li>
+              <li><a href="about.html#values" class="footer-link">Our Services</a></li>
+              <li><a href="contact.html" class="footer-link">Help Center</a></li>
+              <li><a href="contact.html" class="footer-link">Contact Us</a></li>
             </ul>
           </div>
+
           <div>
             <h3 class="text-[#3cd175] font-bold text-lg mb-6 tracking-wide">Service</h3>
             <ul class="flex flex-col gap-3.5 text-sm font-medium">
-              <li><a href="#" class="footer-link">Home Cleaning</a></li>
-              <li><a href="#" class="footer-link">Office Cleaning</a></li>
-              <li><a href="#" class="footer-link">Carpet & Upholstery</a></li>
-              <li><a href="#" class="footer-link">Post-Construction</a></li>
+              <li><a href="#" class="footer-link">Residential Building</a></li>
+              <li><a href="#" class="footer-link">Office CleaningOffice Cleaning</a></li>
+              <li><a href="#" class="footer-link">Hotel & Resort</a></li>
+              <li><a href="#" class="footer-link">Sterilization</a></li>
+              <li><a href="#" class="footer-link">Furniture & Upholstery</a></li>
+              <li><a href="#" class="footer-link">Outdoor Space  </a></li>
             </ul>
           </div>
+
           <div>
             <h3 class="text-[#3cd175] font-bold text-lg mb-6 tracking-wide">Working Hours</h3>
             <div class="flex flex-col gap-4 text-sm font-medium text-gray-300">
-              <div class="flex justify-between border-b border-gray-900 pb-2"><span class="text-gray-400">Mon – Fri:</span><span>9.00am – 8.00pm</span></div>
-              <div class="flex justify-between border-b border-gray-900 pb-2"><span class="text-gray-400">Saturday:</span><span>10.00am – 8.00pm</span></div>
-              <div class="flex justify-between"><span class="text-gray-400">Sunday:</span><span class="text-[#ff8200]">9.00am – 3.00pm</span></div>
+              <div class="flex justify-between border-b border-gray-900 pb-2">
+                <span class="text-gray-400">Mon - Fri:</span>
+                <span>9.00 am - 8.00pm</span>
+              </div>
+              <div class="flex justify-between border-b border-gray-900 pb-2">
+                <span class="text-gray-400">Saturday:</span>
+                <span>10.00 am - 8.00pm</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Sunday:</span>
+                <span class="text-[#ff8200]">9.00 am - 3.00pm</span>
+              </div>
             </div>
           </div>
+
         </div>
+
       </div>
+
     </div>
 
-    <div class="pt-8 mt-4 border-t border-gray-900 flex flex-col md:flex-row items-center justify-between gap-6">
-      <p class="text-xs md:text-sm text-gray-500 order-2 md:order-1 font-medium tracking-wide">&copy; Copyright 2026 by <a href="#" class="hover:text-white transition-colors">Company.com</a></p>
-      <div class="flex flex-wrap items-center justify-center gap-3 order-1 md:order-2">
-        <a href="#" class="inline-flex items-center gap-2 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 text-xs text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-full transition-all">🐦 Twitter</a>
-        <a href="#" class="inline-flex items-center gap-2 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 text-xs text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-full transition-all">📘 Facebook</a>
-        <a href="#" class="inline-flex items-center gap-2 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 text-xs text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-full transition-all">📷 Instagram</a>
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="ml-2 bg-[#3cd175] hover:bg-[#4cee85] text-gray-900 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-md transform hover:-translate-y-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"/></svg>
-        </button>
+    <div class="pt-8 mt-4 border-t border-gray-900 flex flex-col md:flex-row items-center justify-between gap-6 relative">
+      
+      <p class="text-xs md:text-sm text-gray-500 order-2 md:order-1 font-medium tracking-wide">
+        &copy; Copyright 2026 by <a href="#" class="hover:text-white transition-colors"></a>
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3 order-1 md:order-2 w-full md:w-auto">
+        
+
+        <a href="#" aria-label="Follow Shinynova on Facebook"
+          class="group/social inline-flex items-center gap-2.5 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 hover:border-[#3cd175]/40 text-xs text-gray-300 hover:text-white font-semibold py-2 pl-2 pr-4 rounded-full transition-all duration-200 hover:-translate-y-0.5">
+          <span class="w-7 h-7 rounded-full bg-white/5 text-[#3cd175] flex items-center justify-center group-hover/social:bg-[#3cd175] group-hover/social:text-[#07110c] transition-colors">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M13.8 9.2h2.7V6.1h-3.1c-3.3 0-5.1 2-5.1 5v2.2H6.1v3.2h2.2V22h3.5v-5.5h2.8l.5-3.2h-3.3v-2c0-1 .3-2.1 2-2.1z" />
+            </svg>
+          </span>
+          Facebook
+        </a>
+
+
+        <a href="#" aria-label="Follow Shinynova on Instagram"
+          class="group/social inline-flex items-center gap-2.5 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 hover:border-[#3cd175]/40 text-xs text-gray-300 hover:text-white font-semibold py-2 pl-2 pr-4 rounded-full transition-all duration-200 hover:-translate-y-0.5">
+          <span class="w-7 h-7 rounded-full bg-white/5 text-[#3cd175] flex items-center justify-center group-hover/social:bg-[#3cd175] group-hover/social:text-[#07110c] transition-colors">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <path d="M17.5 6.5h.01" />
+            </svg>
+          </span>
+          Instagram
+        </a>
+
+        
+
       </div>
+
     </div>
+
   </div>
 </footer>
 

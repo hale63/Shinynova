@@ -94,6 +94,61 @@
     opacity: 1;
   }
 
+  /* Language Switcher */
+  .lang-switcher { position: relative; }
+  .lang-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 9999px;
+    border: 1.5px solid #e5e7eb;
+    background: #fff; cursor: pointer;
+    font-size: 13px; font-weight: 600; color: #374151;
+    transition: all 0.25s ease;
+  }
+  .lang-btn:hover { border-color: #2a7a2a; color: #2a7a2a; }
+  .lang-btn svg.chevron { width: 14px; height: 14px; transition: transform 0.25s ease; }
+  .lang-switcher.open .lang-btn svg.chevron { transform: rotate(180deg); }
+  .lang-dropdown {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+    min-width: 160px; overflow: hidden;
+    opacity: 0; visibility: hidden;
+    transform: translateY(-8px) scale(0.96);
+    transition: all 0.25s cubic-bezier(.22,1,.36,1);
+    z-index: 100;
+  }
+  .lang-switcher.open .lang-dropdown {
+    opacity: 1; visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+  .lang-option {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; cursor: pointer;
+    font-size: 13px; font-weight: 600; color: #374151;
+    transition: background 0.15s ease;
+    text-decoration: none;
+  }
+  .lang-option:hover { background: #f0fdf4; color: #2a7a2a; }
+  .lang-option.active { background: #f0fdf4; color: #2a7a2a; }
+  .lang-option .flag-icon { width: 22px; height: 16px; border-radius: 3px; flex-shrink: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .lang-btn .flag-icon { width: 22px; height: 16px; border-radius: 3px; flex-shrink: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  /* Mobile lang buttons */
+  .mobile-lang-wrap {
+    display: flex; gap: 8px; padding-top: 8px;
+    border-top: 1px solid #f3f4f6;
+  }
+  .mobile-lang-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 9999px;
+    border: 1.5px solid #e5e7eb; background: #fff;
+    font-size: 13px; font-weight: 600; color: #374151;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .mobile-lang-btn:hover, .mobile-lang-btn.active {
+    border-color: #2a7a2a; color: #2a7a2a; background: #f0fdf4;
+  }
+  .mobile-lang-btn .flag-icon { width: 22px; height: 16px; border-radius: 3px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
   /* Hamburger animation */
   #hamburger.open span:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
@@ -274,6 +329,132 @@
   .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
+  /* ═══════════════════════════════════════════════════════
+     SCROLL-REVEAL ANIMATION SYSTEM
+     Elements start invisible and animate in when they
+     enter the viewport via IntersectionObserver.
+  ═══════════════════════════════════════════════════════ */
+
+  /* Base hidden state for all reveal elements */
+  [data-reveal] {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Revealed state */
+  [data-reveal].revealed {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* ── Direction-based starting transforms ── */
+  [data-reveal="fade-up"]    { transform: translateY(60px); }
+  [data-reveal="fade-down"]  { transform: translateY(-60px); }
+  [data-reveal="slide-left"] { transform: translateX(-80px); }
+  [data-reveal="slide-right"]{ transform: translateX(80px); }
+  [data-reveal="scale-up"]   { transform: scale(0.85); }
+  [data-reveal="scale-down"] { transform: scale(1.15); }
+  [data-reveal="rotate-in"]  { transform: rotate(-6deg) translateY(40px); }
+  [data-reveal="blur-in"]    { filter: blur(12px); transform: translateY(30px); }
+  [data-reveal="flip-up"]    { transform: perspective(800px) rotateX(12deg) translateY(50px); }
+  [data-reveal="zoom-fade"]  { transform: scale(0.9) translateY(40px); }
+
+  /* ── Stagger delays for children ── */
+  [data-reveal-stagger] > *:nth-child(1)  { transition-delay: 0.05s; }
+  [data-reveal-stagger] > *:nth-child(2)  { transition-delay: 0.12s; }
+  [data-reveal-stagger] > *:nth-child(3)  { transition-delay: 0.19s; }
+  [data-reveal-stagger] > *:nth-child(4)  { transition-delay: 0.26s; }
+  [data-reveal-stagger] > *:nth-child(5)  { transition-delay: 0.33s; }
+  [data-reveal-stagger] > *:nth-child(6)  { transition-delay: 0.40s; }
+  [data-reveal-stagger] > *:nth-child(7)  { transition-delay: 0.47s; }
+  [data-reveal-stagger] > *:nth-child(8)  { transition-delay: 0.54s; }
+
+  /* Custom delay attributes */
+  [data-delay="100"] { transition-delay: 0.1s !important; }
+  [data-delay="200"] { transition-delay: 0.2s !important; }
+  [data-delay="300"] { transition-delay: 0.3s !important; }
+  [data-delay="400"] { transition-delay: 0.4s !important; }
+  [data-delay="500"] { transition-delay: 0.5s !important; }
+  [data-delay="600"] { transition-delay: 0.6s !important; }
+  [data-delay="700"] { transition-delay: 0.7s !important; }
+  [data-delay="800"] { transition-delay: 0.8s !important; }
+
+  /* ── Heading shimmer sweep ── */
+  @keyframes shimmerSweep {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .shimmer-text {
+    background: linear-gradient(
+      90deg,
+      currentColor 0%,
+      currentColor 40%,
+      #4caf1a 50%,
+      currentColor 60%,
+      currentColor 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmerSweep 3s ease-in-out 1.5s 1 forwards;
+  }
+
+  /* ── Parallax tilt micro-interaction on cards ── */
+  .tilt-card {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tilt-card:hover {
+    transform: perspective(600px) rotateY(-3deg) rotateX(2deg) translateY(-6px);
+    box-shadow: 0 25px 60px -12px rgba(0,0,0,0.15);
+  }
+
+  /* ── Counter number animation ── */
+  @keyframes countPulse {
+    0%   { transform: scale(0.7); opacity: 0; }
+    60%  { transform: scale(1.08); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .count-animate {
+    animation: countPulse 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* ── Glowing border pulse for CTA sections ── */
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(60, 209, 117, 0); }
+    50%      { box-shadow: 0 0 30px 4px rgba(60, 209, 117, 0.15); }
+  }
+  .glow-on-reveal.revealed {
+    animation: glowPulse 3s ease-in-out 1s infinite;
+  }
+
+  /* ── Smooth underline draw for section labels ── */
+  @keyframes drawLine {
+    from { width: 0; }
+    to   { width: 100%; }
+  }
+  .draw-underline.revealed::after {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #2a7a2a, #4caf1a);
+    border-radius: 2px;
+    animation: drawLine 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+    width: 0;
+  }
+
+  /* ── Floating particle background for dark sections ── */
+  @keyframes particleFloat {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    25% { transform: translateY(-20px) translateX(10px); opacity: 0.6; }
+    50% { transform: translateY(-40px) translateX(-5px); opacity: 0.4; }
+    75% { transform: translateY(-20px) translateX(15px); opacity: 0.5; }
+  }
+
   
 </style>
 </head>
@@ -286,7 +467,7 @@
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left">
 
       <p class="text-white/90">
-        We are creative, cleaning team ambitious and ready for challenges!
+        Creative. Ambitious. Ready to clean and excel.
         <a href="#" class="text-[#f5c518] font-semibold hover:underline ml-1">Hire Us!</a>
       </p>
 
@@ -295,14 +476,14 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
-          support@gmail.com
+        info@shinynove.com
         </span>
         <span class="flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
-          2972 Westheimer Rd. Santa Ana.
+          Nieuwstraat 312, 3201EG Spijkenisse
         </span>
       </div>
 
@@ -313,19 +494,18 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
 
-      <!--logo-->
-      <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
-        <div class="w-10 h-10 bg-[#2a7a2a] rounded-full flex items-center justify-center">
-          <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-          </svg>
-        </div>
-        <span class="text-2xl font-bold text-gray-900 tracking-tight">
-          Shiny<span class="text-[#2a7a2a]">nove</span>
-        </span>
-      </a>
+     
+<!--logo-->
+<a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+  <div class="w-16 h-10 rounded-full flex items-center justify-center">
+    <img src="assets/logo.png" alt="Shinynove Logo">
+  </div>
+  <span class="text-xl font-extrabold tracking-tight">
+    <span class="text-gray-900">Shiny</span><span class="text-[#2a7a2a] italic">nove</span>
+  </span>
+</a>
 
-      <ul class="hidden md:flex items-center gap-8 text-gray-800 font-semibold text-base tracking-wide">
+      <ul class="hidden md:flex items-center gap-10 text-gray-800 font-semibold text-xl text-bold tracking-wide">
         <li>
           <a href="index.html" class="hover:text-[#2a7a2a] transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-[#2a7a2a]">
             Home
@@ -350,37 +530,37 @@
 
       <div class="hidden md:flex items-center gap-4">
 
-        <button class="relative text-gray-600 hover:text-[#2a7a2a] transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-          </svg>
-          <span class="absolute -top-2 -right-2 bg-[#2a7a2a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-        </button>
-
-        <button class="text-gray-600 hover:text-[#2a7a2a] transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
-          </svg>
-        </button>
-
-        <a href="#"
-          class="flex items-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 shadow-sm hover:shadow-md text-sm">
-          Make Appointment
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/>
-          </svg>
-        </a>
+        <!-- Language Switcher -->
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" onclick="toggleLangDropdown()" aria-label="Select language">
+            <span class="flag-icon" id="current-flag">
+              <!-- Netherlands Flag -->
+              <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="160" fill="#AE1C28"/><rect y="160" width="640" height="160" fill="#FFF"/><rect y="320" width="640" height="160" fill="#21468B"/></svg>
+            </span>
+            <span id="current-lang-label">NL</span>
+            <svg class="chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="lang-dropdown">
+            <a href="#" class="lang-option active" data-lang="nl" onclick="setLang('nl', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="160" fill="#AE1C28"/><rect y="160" width="640" height="160" fill="#FFF"/><rect y="320" width="640" height="160" fill="#21468B"/></svg>
+              </span>
+              Nederlands
+            </a>
+            <a href="#" class="lang-option" data-lang="en" onclick="setLang('en', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="480" fill="#012169"/><path d="M75 0l244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z" fill="#FFF"/><path d="M424 281l216 159v40L369 281h55zm-184 20l6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z" fill="#C8102E"/><path d="M241 0v480h160V0H241zM0 160v160h640V160H0z" fill="#FFF"/><path d="M273 0v480h96V0h-96zM0 192v96h640v-96H0z" fill="#C8102E"/></svg>
+              </span>
+              English
+            </a>
+          </div>
+        </div>
 
       </div>
 
       <div class="flex md:hidden items-center gap-3">
 
-        <button class="relative text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-          </svg>
-          <span class="absolute -top-2 -right-2 bg-[#2a7a2a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-        </button>
+        
 
         <button id="hamburger" class="flex flex-col gap-[5px] p-1" onclick="toggleMenu()">
           <span class="block w-6 h-0.5 bg-gray-700 rounded"></span>
@@ -393,20 +573,27 @@
     </div>
 
     <div id="mobile-menu">
-      <ul class="flex flex-col px-6 pb-5 pt-3 gap-5 text-gray-800 font-semibold text-base tracking-wide border-t border-gray-100">
+      <ul class="flex flex-col px-12 pb-5 pt-3 gap-5 text-gray-800 font-semibold text-base tracking-wide border-t border-gray-100">
         <li><a href="index.html" class="block hover:text-[#2a7a2a] transition-colors">Home</a></li>
         <li><a href="about.html" class="block hover:text-[#2a7a2a] transition-colors">About</a></li>
         <li><a href="services.html" class="block hover:text-[#2a7a2a] transition-colors">Services</a></li>
         <li><a href="contact.html" class="block hover:text-[#2a7a2a] transition-colors">Contact</a></li>
 
-        <li class="pt-2">
-          <a href="#"
-            class="flex items-center justify-center gap-2 bg-[#f5c518] text-gray-900 font-semibold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-all duration-200 text-sm w-full">
-            Make Appointment
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/>
-            </svg>
-          </a>
+        <li>
+          <div class="mobile-lang-wrap">
+            <button class="mobile-lang-btn active" data-lang="nl" onclick="setLang('nl', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="160" fill="#AE1C28"/><rect y="160" width="640" height="160" fill="#FFF"/><rect y="320" width="640" height="160" fill="#21468B"/></svg>
+              </span>
+              NL
+            </button>
+            <button class="mobile-lang-btn" data-lang="en" onclick="setLang('en', event)">
+              <span class="flag-icon">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="480" fill="#012169"/><path d="M75 0l244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z" fill="#FFF"/><path d="M424 281l216 159v40L369 281h55zm-184 20l6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z" fill="#C8102E"/><path d="M241 0v480h160V0H241zM0 160v160h640V160H0z" fill="#FFF"/><path d="M273 0v480h96V0h-96zM0 192v96h640v-96H0z" fill="#C8102E"/></svg>
+              </span>
+              EN
+            </button>
+          </div>
         </li>
       </ul>
     </div>
@@ -445,8 +632,7 @@
       </div>
  
       <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] mb-6 tracking-tight">
-        <span class="animate-fade-up-1 inline-block text-gray-900">A Cleaner</span>
-        <span class="animate-fade-up-2 inline-block text-gray-900">Space</span><br class="hidden sm:inline">
+        <span class="animate-fade-up-1 inline-block text-gray-900">A Cleaner Space</span>
         <span class="animate-fade-up-3 inline-block text-white">Starts</span>
         <span class="animate-fade-up-4 inline-block text-white">Here</span>
       </h1>
@@ -534,20 +720,20 @@
 </section>
 
 
-<!═══════════════════════ ABOUT US ═══════════════════════>
+<!--═══════════════════════ ABOUT US ═══════════════════════-->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 font-sans text-gray-800 overflow-hidden">
   
-  <div class="inline-flex items-center gap-2 border border-gray-200 rounded-full px-4 py-1.5 mb-6 shadow-sm animate-fade-in-up hover:shadow-md transition-shadow duration-300 cursor-default">
+  <div data-reveal="fade-up" class="inline-flex items-center gap-2 border border-gray-200 rounded-full px-4 py-1.5 mb-6 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-default draw-underline">
     <span class="w-2 h-2 rounded-full bg-[#ff8200] animate-pulse"></span>
     <span class="text-sm font-medium text-gray-700">About Us</span>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-12 items-end">
-    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 leading-[1.2] animate-fade-in-left delay-100">
-      Redefining Clean for<br class="hidden md:block"/> Homes and Businesses
+    <h2 data-reveal="slide-left" class="text-4xl md:text-5xl font-bold text-gray-900 leading-[1.2]">
+      Redefining Clean for<br class="hidden md:block"/> <span class="shimmer-text">Homes and Businesses</span>
     </h2>
     
-    <div class="border-b border-gray-100 pb-6 lg:pb-8 animate-fade-in-right delay-200">
+    <div data-reveal="slide-right" data-delay="200" class="border-b border-gray-100 pb-6 lg:pb-8">
       <p class="text-gray-500 text-sm md:text-base leading-relaxed">
         It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a morelt is a reader will be distracted by the readable
       </p>
@@ -556,7 +742,7 @@
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
     
-    <div class="lg:col-span-8 relative rounded-[2rem] overflow-hidden min-h-[450px] md:min-h-[550px] shadow-sm animate-fade-in-left delay-300 group">
+    <div data-reveal="zoom-fade" data-delay="300" class="lg:col-span-8 relative rounded-[2rem] overflow-hidden min-h-[450px] md:min-h-[550px] shadow-sm group tilt-card">
       <img src="assets/about1-1.jpg" alt="Cleaner wiping window sill" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
       
       <div class="absolute bottom-0 left-0 bg-white rounded-tr-[2.5rem] pt-6 pr-6 pb-0 pl-0 flex flex-col sm:flex-row items-start sm:items-center gap-6 w-[90%] sm:w-auto transform translate-y-0 transition-transform duration-500 hover:-translate-y-1">
@@ -584,7 +770,7 @@
       </div>
     </div>
 
-    <div class="lg:col-span-4 border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 rounded-[2.5rem] p-4 flex flex-col gap-2 bg-white animate-fade-in-right delay-400">
+    <div data-reveal="slide-right" data-delay="400" class="lg:col-span-4 border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 rounded-[2.5rem] p-4 flex flex-col gap-2 bg-white tilt-card">
       
       <div class="bg-[#f2f9eb] rounded-[2rem] p-6 sm:p-8 relative overflow-hidden flex-1 min-h-[220px] group/stat">
         <h3 class="text-5xl lg:text-6xl font-bold text-[#49b93b] mb-2 transition-transform duration-500 group-hover/stat:scale-110 origin-left">98%</h3>
@@ -610,7 +796,7 @@
 
 
 
-<!-- FLOATING DECOR 2: Top Right Soap Bubbles Line Art -->
+<!-- -FLOATING DECOR 2: Top Right Soap Bubbles Line Art -->
 <div class="absolute top-12 right-[2%] text-gray-300/30 w-24 h-24 hidden md:block animate-float-icon pointer-events-none select-none" style="animation-delay: 1.5s;">
   <svg fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <circle cx="8" cy="16" r="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -625,11 +811,11 @@
 <!--servİces-->
 <section class="max-w-7xl mx-auto">
     <!-- Header Section matching image_ddae8c.jpg -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+    <div data-reveal="fade-up" class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
       <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
-        WHAT WE  <span class="text-emerald-500"> PROVIDE </span>
+        WHAT WE  <span class="text-emerald-500 shimmer-text"> PROVIDE </span>
       </h2>
-      <a href="services.html" class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold px-6 py-3 rounded text-xs tracking-wider uppercase transition-colors duration-200">
+      <a href="services.html" data-reveal="scale-up" data-delay="300" class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold px-6 py-3 rounded text-xs tracking-wider uppercase transition-colors duration-200">
         Learn More
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -693,7 +879,7 @@
   <div class=" py-12 "></div>
 
 <!--COMMents-->>
-<section class="relative bg-gradient-to-b from-[#09120e] via-[#11241a] to-[#0c1811] py-20 px-4 sm:px-6 overflow-hidden font-sans text-gray-200">
+<section class="relative bg-gradient-to-b from-[#09120e] via-[#11241a] to-[#0c1811] py-20 px-4 sm:px-6 overflow-hidden font-sans text-gray-200" id="testimonials-section">
   
   <!-- Ambient Wave/Glow effects in background -->
   <div class="absolute inset-0 pointer-events-none opacity-20">
@@ -725,16 +911,16 @@
     <!-- Section Header Area -->
     <div class="flex flex-col items-center text-center mb-14">
       <!-- Badge Pill -->
-      <div class="inline-flex items-center gap-2 border border-white/10 bg-white/5 rounded-full px-4 py-1 mb-4 backdrop-blur-sm">
+      <div data-reveal="scale-up" class="inline-flex items-center gap-2 border border-white/10 bg-white/5 rounded-full px-4 py-1 mb-4 backdrop-blur-sm">
         <span class="w-1.5 h-1.5 rounded-full bg-[#ff6a00]"></span>
         <span class="text-xs font-semibold text-gray-300 tracking-wider uppercase">Testimonials</span>
       </div>
       
       <!-- Main Header Title -->
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white max-w-2xl leading-[1.2] mb-4 tracking-tight">
+      <h2 data-reveal="fade-up" data-delay="200" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white max-w-2xl leading-[1.2] mb-4 tracking-tight">
         The Best Customers Says About Our Action
       </h2>
-      <p class="text-gray-400 text-xs sm:text-sm tracking-wide font-medium">
+      <p data-reveal="fade-up" data-delay="400" class="text-gray-400 text-xs sm:text-sm tracking-wide font-medium">
         Here's what happy customers are saying about our top-rated cleaning service
       </p>
     </div>
@@ -742,7 +928,7 @@
     <!-- ========================================== -->
     <!-- SLIDER CARD BOX CONTAINER                  -->
     <!-- ========================================== -->
-    <div class="bg-[#122218]/80 border border-white/5 backdrop-blur-md rounded-[2rem] p-6 sm:p-10 lg:p-12 shadow-2xl mb-16">
+    <div data-reveal="blur-in" data-delay="300" class="bg-[#122218]/80 border border-white/5 backdrop-blur-md rounded-[2rem] p-6 sm:p-10 lg:p-12 shadow-2xl mb-16 glow-on-reveal">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
         <!-- Left Side: Interactive Portrait Avatar Selection -->
@@ -816,29 +1002,29 @@
     <!-- ========================================== -->
     <!-- LOWER STATISTICS METRICS GRID BLOCK        -->
     <!-- ========================================== -->
-    <div class="grid grid-cols-2 md:grid-cols-4 border border-white/10 rounded-2xl bg-white/[0.02] backdrop-blur-xs overflow-hidden divide-y divide-x-0 md:divide-y-0 md:divide-x divide-white/10 text-center">
+    <div data-reveal="fade-up" data-delay="200" data-reveal-stagger class="grid grid-cols-2 md:grid-cols-4 border border-white/10 rounded-2xl bg-white/[0.02] backdrop-blur-xs overflow-hidden divide-y divide-x-0 md:divide-y-0 md:divide-x divide-white/10 text-center">
       
       <!-- Stat Card 1 -->
       <div class="p-6 lg:p-8 flex flex-col justify-center items-center hover:bg-white/[0.02] transition-colors duration-200">
-        <span class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">12200+</span>
+        <span data-count="12200" data-suffix="+" class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">0</span>
         <span class="text-xs font-medium text-gray-400 tracking-wide max-w-[120px]">Businesses Using Our Platform</span>
       </div>
 
       <!-- Stat Card 2 -->
       <div class="p-6 lg:p-8 flex flex-col justify-center items-center hover:bg-white/[0.02] transition-colors duration-200">
-        <span class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">1200+</span>
+        <span data-count="1200" data-suffix="+" class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">0</span>
         <span class="text-xs font-medium text-gray-400 tracking-wide max-w-[120px]">Businesses Using Our Platform</span>
       </div>
 
       <!-- Stat Card 3 -->
       <div class="p-6 lg:p-8 flex flex-col justify-center items-center hover:bg-white/[0.02] transition-colors duration-200">
-        <span class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">98%</span>
+        <span data-count="98" data-suffix="%" class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">0</span>
         <span class="text-xs font-medium text-gray-400 tracking-wide max-w-[120px]">Businesses Using Our Platform</span>
       </div>
 
       <!-- Stat Card 4 -->
       <div class="p-6 lg:p-8 flex flex-col justify-center items-center hover:bg-white/[0.02] transition-colors duration-200">
-        <span class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">35+</span>
+        <span data-count="35" data-suffix="+" class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">0</span>
         <span class="text-xs font-medium text-gray-400 tracking-wide max-w-[120px]">Businesses Using Our Platform</span>
       </div>
 
@@ -854,7 +1040,7 @@
     <!-- ========================================== -->
     <!-- LEFT COLUMN: INTERACTIVE SLIDER COMPONENT  -->
     <!-- ========================================== -->
-    <div class="relative w-full aspect-[4/3] sm:aspect-[1.4/1] rounded-[1.5rem] overflow-hidden shadow-md select-none group" id="slider-container">
+    <div data-reveal="slide-left" class="relative w-full aspect-[4/3] sm:aspect-[1.4/1] rounded-[1.5rem] overflow-hidden shadow-md select-none group" id="slider-container">
       
       <!-- [1] BEFORE IMAGE (Base Layer) -->
       <img src="assets/before-img-h9PAKEVC.webp" alt="Dirty couch before cleaning" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
@@ -894,7 +1080,7 @@
     <!-- ========================================== -->
     <!-- RIGHT COLUMN: TEXT CONTENT & ACTIONS       -->
     <!-- ========================================== -->
-    <div class="flex flex-col justify-center">
+    <div data-reveal="slide-right" data-delay="200" class="flex flex-col justify-center">
       
       <!-- Header Badge -->
       <div class="inline-flex items-center gap-2 mb-4 self-start">
@@ -918,7 +1104,7 @@
       </p>
 
       <!-- Feature Checklist Items -->
-      <div class="flex flex-col gap-4 mb-10">
+      <div data-reveal="fade-up" data-delay="400" data-reveal-stagger class="flex flex-col gap-4 mb-10">
         <!-- Item 1 -->
         <div class="flex items-center gap-3">
           <div class="w-6 h-6 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 shrink-0">
@@ -965,7 +1151,7 @@
 
 
 <!-- Main Wrapper with extra top spacing (mt-16) to make room for the overflowing head -->
-<div class="relative w-full max-w-7xl mx-auto mt-16 mb-8 px-6 md:px-12 flex flex-col md:flex-row items-center justify-between">
+<div data-reveal="zoom-fade" class="relative w-full max-w-7xl mx-auto mt-16 mb-8 px-6 md:px-12 flex flex-col md:flex-row items-center justify-between glow-on-reveal">
   
   <!-- The Green Background Card (Shorter height) -->
   <div class="absolute inset-0 bg-gradient-to-br from-[#e0f7eb] to-[#c2edd5] rounded-3xl overflow-hidden pointer-events-none">
@@ -975,7 +1161,7 @@
   </div>
 
   <!-- Left Content Area -->
-  <div class="relative z-10 w-full md:w-1/2 pt-8 pb-6 md:py-10 text-center md:text-left flex flex-col justify-center">
+  <div data-reveal="slide-left" data-delay="200" class="relative z-10 w-full md:w-1/2 pt-8 pb-6 md:py-10 text-center md:text-left flex flex-col justify-center">
     <!-- Subtitle -->
     <p class="text-xs font-extrabold tracking-widest text-[#2d3748] uppercase mb-2">
       Spaces That Work For You
@@ -1009,7 +1195,7 @@
   </div>
 
   <!-- Right Image Area: Perfectly matches image_3fcc39.jpg -->
-  <div class="relative z-10 w-full md:w-1/2 flex items-end justify-center md:justify-end self-end mt-4 md:mt-0">
+  <div data-reveal="slide-right" data-delay="400" class="relative z-10 w-full md:w-1/2 flex items-end justify-center md:justify-end self-end mt-4 md:mt-0">
     <!-- 
       -md:mt-16 pulls the top of her head up past the green card boundary on desktop.
       Replace src with your local path to the cutout image from image_3fcc39.jpg.
@@ -1038,32 +1224,33 @@
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
     
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-16">
+    <div data-reveal="fade-up" data-reveal-stagger class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-16">
       
       <div class="lg:col-span-4 bg-[#141f1a] rounded-[2rem] p-8 relative overflow-hidden shadow-xl border-l-[5px] border-[#3cd175] flex flex-col justify-between min-h-[320px]">
         
-        <div class="flex items-center gap-3 mb-8">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#3cd175] to-[#ffd200] flex items-center justify-center shadow-inner">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l-1.81-5.096L2.1 14.1 7.19 13.2l.913-5.096.913 5.096 5.09 1.1-5.09 1.604zm7.443-11.316L16.5 9l-.756-4.412L11.25 3.75l4.494-.756L16.5-1.5l.756 4.494 4.494.756-4.494.756z"></path>
-            </svg>
-          </div>
-          <span class="text-2xl font-bold text-white tracking-tight">Shinynova</span>
-        </div>
+        <!--logo-->
+<a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+  <div class="w-24 h-32 rounded-full flex items-center justify-center">
+    <img src="assets/logo.png" alt="Shinynove Logo">
+  </div>
+  <span class="text-3xl font-extrabold tracking-tight">
+    <span class="text-white">Shiny</span><span class="text-[#2a7a2a] italic">nove</span>
+  </span>
+</a>
 
         <div class="flex flex-col gap-5">
-          <a href="tel:+6295550129" class="flex items-center gap-4 group/item text-gray-300 hover:text-white transition-colors">
+          <a href="tel:+31 6 86424118" class="flex items-center gap-4 group/item text-gray-300 hover:text-white transition-colors">
             <span class="text-[#ff8200] transform group-hover/item:scale-110 transition-transform duration-200">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
             </span>
-            <span class="text-sm font-medium tracking-wide">+629 555-0129</span>
+            <span class="text-sm font-medium tracking-wide">+31 6 86424118</span>
           </a>
 
-          <a href="mailto:demo@example.com" class="flex items-center gap-4 group/item text-gray-300 hover:text-white transition-colors">
+          <a href="mailto:info@shinynove.com" class="flex items-center gap-4 group/item text-gray-300 hover:text-white transition-colors">
             <span class="text-[#ff8200] transform group-hover/item:scale-110 transition-transform duration-200">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
             </span>
-            <span class="text-sm font-medium tracking-wide">demo@example.com</span>
+            <span class="text-sm font-medium tracking-wide">info@shinynove.com</span>
           </a>
 
           <div class="flex items-start gap-4 group/item text-gray-300">
@@ -1071,7 +1258,7 @@
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
             </span>
             <span class="text-sm font-medium leading-relaxed tracking-wide">
-              1901 Thornridge Cir. Shiloh,<br/>Hawaii 81063
+              Nieuwstraat 312, 3201EG Spijkenisse
             </span>
           </div>
         </div>
@@ -1081,34 +1268,35 @@
       <div class="lg:col-span-8 flex flex-col justify-between pt-4">
         
         <div class="flex justify-end mb-12 lg:mb-6">
-          <a href="#" class="group inline-flex items-center gap-4 text-[#ff8200] hover:text-white font-bold text-base md:text-lg tracking-wide transition-colors">
-            Book A Free Consultation
+          <a href="contact.html" class="group inline-flex items-center gap-4 text-[#ff8200] hover:text-white font-bold text-base md:text-lg tracking-wide transition-colors">
+            Contact Us
             <span class="w-10 h-10 rounded-full bg-[#3cd175] text-gray-900 flex items-center justify-center transform group-hover:rotate-45 transition-all duration-300 shadow-md group-hover:shadow-[#3cd175]/20 group-hover:bg-[#4cee85]">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg>
             </span>
           </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 border-t border-gray-900/60 pt-10">
+        <div data-reveal="fade-up" data-delay="300" data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 border-t border-gray-900/60 pt-10">
           
           <div>
             <h3 class="text-[#3cd175] font-bold text-lg mb-6 tracking-wide">Company</h3>
             <ul class="flex flex-col gap-3.5 text-sm font-medium">
               <li><a href="about.html" class="footer-link">About</a></li>
-              <li><a href="about.html#values" class="footer-link">Our Mission</a></li>
-              <li><a href="#" class="footer-link">Our Blogs</a></li>
-              <li><a href="#" class="footer-link">Help Center</a></li>
-              <li><a href="#" class="footer-link">Contact Us</a></li>
+              <li><a href="about.html#values" class="footer-link">Our Services</a></li>
+              <li><a href="contact.html" class="footer-link">Help Center</a></li>
+              <li><a href="contact.html" class="footer-link">Contact Us</a></li>
             </ul>
           </div>
 
           <div>
             <h3 class="text-[#3cd175] font-bold text-lg mb-6 tracking-wide">Service</h3>
             <ul class="flex flex-col gap-3.5 text-sm font-medium">
-              <li><a href="#" class="footer-link">Home Cleaning</a></li>
-              <li><a href="#" class="footer-link">Office Cleaning</a></li>
-              <li><a href="#" class="footer-link">Carpet & Upholstery</a></li>
-              <li><a href="#" class="footer-link">Post-Construction</a></li>
+              <li><a href="#" class="footer-link">Residential Building</a></li>
+              <li><a href="#" class="footer-link">Office CleaningOffice Cleaning</a></li>
+              <li><a href="#" class="footer-link">Hotel & Resort</a></li>
+              <li><a href="#" class="footer-link">Sterilization</a></li>
+              <li><a href="#" class="footer-link">Furniture & Upholstery</a></li>
+              <li><a href="#" class="footer-link">Outdoor Space  </a></li>
             </ul>
           </div>
 
@@ -1139,36 +1327,36 @@
     <div class="pt-8 mt-4 border-t border-gray-900 flex flex-col md:flex-row items-center justify-between gap-6 relative">
       
       <p class="text-xs md:text-sm text-gray-500 order-2 md:order-1 font-medium tracking-wide">
-        &copy; Copyright 2026 by <a href="#" class="hover:text-white transition-colors">Company.com</a>
+        &copy; Copyright 2026 by <a href="#" class="hover:text-white transition-colors"></a>
       </p>
 
       <div class="flex flex-wrap items-center justify-center gap-3 order-1 md:order-2 w-full md:w-auto">
         
-        <a href="#" class="inline-flex items-center gap-2 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 text-xs text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-full transition-all duration-200">
-          <span class="text-gray-400 group-hover:text-white">🐦</span>
-          Twitter
-        </a>
 
-        <a href="#" class="inline-flex items-center gap-2 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 text-xs text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-full transition-all duration-200">
-          <span class="text-gray-400">📘</span>
+        <a href="#" aria-label="Follow Shinynova on Facebook"
+          class="group/social inline-flex items-center gap-2.5 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 hover:border-[#3cd175]/40 text-xs text-gray-300 hover:text-white font-semibold py-2 pl-2 pr-4 rounded-full transition-all duration-200 hover:-translate-y-0.5">
+          <span class="w-7 h-7 rounded-full bg-white/5 text-[#3cd175] flex items-center justify-center group-hover/social:bg-[#3cd175] group-hover/social:text-[#07110c] transition-colors">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M13.8 9.2h2.7V6.1h-3.1c-3.3 0-5.1 2-5.1 5v2.2H6.1v3.2h2.2V22h3.5v-5.5h2.8l.5-3.2h-3.3v-2c0-1 .3-2.1 2-2.1z" />
+            </svg>
+          </span>
           Facebook
         </a>
 
-        <a href="#" class="inline-flex items-center gap-2 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 text-xs text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-full transition-all duration-200">
-          <span class="text-gray-400">📌</span>
-          Pinterest
-        </a>
 
-        <a href="#" class="inline-flex items-center gap-2 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 text-xs text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-full transition-all duration-200">
-          <span class="text-gray-400">📷</span>
+        <a href="#" aria-label="Follow Shinynova on Instagram"
+          class="group/social inline-flex items-center gap-2.5 bg-[#141f1a] hover:bg-[#1f2f27] border border-gray-900 hover:border-[#3cd175]/40 text-xs text-gray-300 hover:text-white font-semibold py-2 pl-2 pr-4 rounded-full transition-all duration-200 hover:-translate-y-0.5">
+          <span class="w-7 h-7 rounded-full bg-white/5 text-[#3cd175] flex items-center justify-center group-hover/social:bg-[#3cd175] group-hover/social:text-[#07110c] transition-colors">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <path d="M17.5 6.5h.01" />
+            </svg>
+          </span>
           Instagram
         </a>
 
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="ml-2 bg-[#3cd175] hover:bg-[#4cee85] text-gray-900 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-md transform hover:-translate-y-1 shrink-0" aria-label="Back to Top">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
-          </svg>
-        </button>
+        
 
       </div>
 
